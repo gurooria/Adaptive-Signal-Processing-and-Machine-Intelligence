@@ -7,9 +7,9 @@ clc;
 
 %% Initialisations
 
-Fs = 100; % sampling frequency
+Fs = 1000; % sampling frequency
 T = 1/Fs; % sampling period
-N = 500; % signal length
+N = 3000; % signal length
 
 % plotting axis in time domain
 t = (0 : N-1) * T; % signal vector (in seconds, starts from 0)
@@ -18,7 +18,7 @@ t = (0 : N-1) * T; % signal vector (in seconds, starts from 0)
 
 % pulse signal
 pulse = zeros(size(t));
-pulse(N/2) = 2;
+pulse(N/2) = 2; % set pulse
 pulseACF = xcorr(pulse, 'biased'); % pulse ACF
 
 % sine signal
@@ -89,6 +89,7 @@ plot(f1, pulsePSD1, 'r', 'LineWidth', 1);
 hold on;
 plot(f2, pulsePSD2, '--b', 'LineWidth', 1.6);
 hold off;
+ylim([0, 0.002]);
 legend('Def.1', 'Def.2');
 set(gca,'fontsize', 12);
 xlabel('Frequency (Hz)', 'fontsize', 12);
