@@ -3,101 +3,97 @@ clc
 clear
 close all
 
-sampNo = 1000;
-deltas = [3];% only one delay value to be tested
-mu = 0.01; 
-its = 100;
-M = 5; % filter order (minimum one that is tested in part b)
+% Initialisations
+N = 1000;
+deltas = 3;
+order = 5; 
+stepSize = 0.01; 
+iterations = 100;
 a = 1;
-b = [1 0 0.5]; % since we have eta(n) = v(n) + 0.5v(n-2) (+0v(n-1))
-% generating the clean component of s(n)
-x = sin(0.01*pi.*(0:sampNo-1)); 
+b = [1 0 0.5];
+x = sin(0.01*pi.*(0:N-1)); 
+corruptedSignals = zeros(iterations, N);
+xHatsALE = zeros(iterations, N);
+mspeALE = zeros(iterations, 1);
+xHatsANC = zeros(iterations, N);
+mspeANC = zeros(iterations, 1);
 
+% Generate results
+for iteration = 1: iterations
+    wgn = randn(1, N); % has unit variance
+    coloredNoise = filter(b, a, wgn);
+    s = x + coloredNoise;
+    u = 1.2 * coloredNoise + 0.1;
+    corruptedSignals(iteration, :) = s;
+
+    % ALE
+    [xHatALE, ~, ~] = LMS_ALE(s, stepSize, 0, order, deltas);
+    xHatsALE(iteration, :) = xHatALE;
+    mspeALE(iteration) = mean((x(100:end) - xHatALE(100:end)').^2);
+    
+    % ANC
+    [xhatANC, ~, ~] = LMS_ANC(s, u, stepSize, 0, order);
+    xHatsANC(iteration,:) = xhatANC;
+    mspeANC(iteration) = mean((x(100:end)-xhatANC(100:end)').^2);
+
+end
+
+%% Plotting
 figure
 hold on
 
-s_all =  zeros(its,sampNo);
-xhat_allALE = zeros(its,sampNo);
-MSPE_ALE = zeros(its,1);
-
-xhat_allANC = zeros(its,sampNo);
-MSPE_ANC = zeros(its,1);
-
-for j = 1: its
-    j
-    v = randn(1,sampNo); % has unit variance
-    % generating the coloured noise component of s(n)
-    eta = filter(b,a,v);
-    % constructing the input signal to ALE LMS
-    s = x + eta;
-    u = 1.2*eta+0.1;
-    s_all(j,:) = s;
-
-    % ALE
-    [xhatALE,wALE,errALE] = ALE_LMS(s,mu,0,M,deltas);
-    xhat_allALE(j,:) = xhatALE;
-    MSPE_ALE(j) = mean((x(100:end)-xhatALE(100:end)').^2);
-    % ANC
-    [noiseEst,wANC,xhatANC] = ANC_LMS(s,u,mu,0,M);
-    xhat_allANC(j,:) = xhatANC;
-    MSPE_ANC(j) = mean((x(100:end)-xhatANC(100:end)').^2);
-
-end
 % plot ALE
 subplot(1,3,1)
-p1 = plot(s_all','b','LineWidth',1.5,'DisplayName','$s(n)$')
+sPlot = plot(corruptedSignals', 'b', 'LineWidth', 1.2, 'DisplayName','$s(n)$');
 hold on
-p2 = plot(xhat_allALE','r','LineWidth',1.5,'DisplayName','$\hat{x}(n)$')
+xHatALEPlot = plot(xHatsALE', 'r', 'LineWidth', 1.2, 'DisplayName', '$\hat{x}(n)$');
 hold on
-p3 = plot(x,'y','LineWidth',2,'DisplayName','$x(n)$')
-MSPE4title = mean(MSPE_ALE);
-title(sprintf('MSPE = %0.3f, $\\Delta$ = 3, M =5',MSPE4title),'Interpreter','latex','fontsize',15)
-ax = gca;
-ax.FontSize = 15;
-xlabel('Sample Index (n)','fontsize',15)
-ylabel('(AU)','fontsize',15)
+xPlot = plot(x, 'y', 'LineWidth', 1.5, 'DisplayName', '$x(n)$');
+meanMSPE = mean(mspeALE);
+title(sprintf('Prediction using ALE, MSPE = %0.3f', meanMSPE), 'fontsize', 12);
+xlabel('Sample Number n', 'fontsize', 12);
+ylabel('Magnitude', 'fontsize', 12);
 set(groot,'defaultLegendInterpreter','latex');
-allps = [p1(1),p2(1),p3];
-legend(allps)
+set(gca, 'fontSize', 12);
+allPlots = [sPlot(1), xHatALEPlot(1), xPlot];
+legend(allPlots)
 grid on
-grid minor 
-% sgtitle('Empirical Justification of Minimum Delay','fontsize',18)
-% plot ALE
+grid minor
+
+% plot ANC
 subplot(1,3,2)
-p1 = plot(s_all','b','LineWidth',1.5,'DisplayName','$s(n)$')
+sPlot = plot(corruptedSignals', 'b', 'LineWidth', 1.2, 'DisplayName', '$s(n)$');
 hold on
-p2 = plot(xhat_allANC','r','LineWidth',1.5,'DisplayName','$\hat{x}(n)$')
+xHatANCPlot = plot(xHatsANC', 'r', 'LineWidth', 1.2, 'DisplayName', '$\hat{x}(n)$');
 hold on
-p3 = plot(x,'y','LineWidth',2,'DisplayName','$x(n)$')
-MSPE4title = mean(MSPE_ANC);
-title(sprintf('MSPE = %0.3f, $\\Delta$ = 3, M =5',MSPE4title),'Interpreter','latex','fontsize',15)
-ax = gca;
-ax.FontSize = 15;
-xlabel('Sample Index (n)','fontsize',15)
-ylabel('(AU)','fontsize',15)
-set(groot,'defaultLegendInterpreter','latex');
-allps = [p1(1),p2(1),p3];
-legend(allps)
+xPlot = plot(x, 'y', 'LineWidth', 1.5, 'DisplayName', '$x(n)$');
+meanMSPE = mean(mspeANC);
+title(sprintf('Prediction using ANC, MSPE = %0.3f', meanMSPE), 'fontsize', 12);
+xlabel('Sample Number n', 'fontsize', 12);
+ylabel('Magnitude', 'fontsize', 12);
+set(gca, 'fontSize', 12);
+set(groot, 'defaultLegendInterpreter', 'latex');
+allPlots = [sPlot(1), xHatANCPlot(1), xPlot];
+legend(allPlots)
 grid on
 grid minor 
 set(gcf,'color','w')
 
-% ensemble of realisations
-ANC_ensemble = mean(xhat_allANC);
-ALE_ensemble = mean(xhat_allALE);
+% plot realisation ensemble
+aleEnsemble = mean(xHatsALE);
+ancEnsemble = mean(xHatsANC);
 subplot(1,3,3)
-plot(ALE_ensemble,'b','LineWidth',2);
+plot(aleEnsemble, 'b', 'LineWidth', 1.2);
 hold on
-plot(ANC_ensemble,'r','LineWidth',2);
+plot(ancEnsemble, 'r', 'LineWidth', 1.2);
 hold on
-plot(x,'y','LineWidth',2);
-title('Ensemble Means: ALE vs ANC','Interpreter','latex','fontsize',15)
-ax = gca;
-ax.FontSize = 15;
-xlabel('Sample Index (n)','fontsize',15)
-ylabel('(AU)','fontsize',15)
-set(groot,'defaultLegendInterpreter','latex');
-legend('ALE','ALC','$x(n)$')
+plot(x, 'y', 'LineWidth', 1.2);
+title('Comparison between the Ensemble Means of ALE vs ANC', 'fontsize', 12);
+xlabel('Sample Number n', 'fontsize', 12);
+ylabel('Magnitude', 'fontsize', 12);
+set(gca, 'fontSize', 12);
+set(groot, 'defaultLegendInterpreter', 'latex');
+legend('ALE', 'ALC', '$x(n)$')
 grid on
 grid minor 
 set(gcf,'color','w')
