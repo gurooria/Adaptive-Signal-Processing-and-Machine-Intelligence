@@ -32,11 +32,11 @@ for i = 1: length(deltas)
     end
 
     subplot(1, 4, i) % one plot for each delta
-    sPlot = plot(corruptedSignals', 'b', 'LineWidth', 1.2, 'DisplayName', 's(n)');
+    sPlot = plot(corruptedSignals', 'b', 'LineWidth', 1.2, 'DisplayName','$s(n)$');
     hold on
-    xHatPlot = plot(xHats', 'r', 'LineWidth', 1.2, 'DisplayName', 'x_{hat}(n)');
+    xHatPlot = plot(xHats', 'r', 'LineWidth', 1.2, 'DisplayName', '$\hat{x}(n)$');
     hold on
-    xPlot = plot(x, 'y', 'LineWidth', 1.5, 'DisplayName', 'x(n)');
+    xPlot = plot(x, 'm', 'LineWidth', 1.5, 'DisplayName', '$x(n)$');
     meanMSPE = mean(MSPE);
     title(sprintf('MSPE = %0.3f, Delay = %0.0f', meanMSPE, deltas(i)), 'fontsize', 12)
     ax = gca;
@@ -44,6 +44,7 @@ for i = 1: length(deltas)
     xlabel('Sample Number (n)','fontsize', 12)
     ylabel('Magnitude', 'fontsize', 12)
     allPlots = [sPlot(1), xHatPlot(1), xPlot];
+    set(groot,'defaultLegendInterpreter','latex');
     legend(allPlots)
     grid on
     grid minor
