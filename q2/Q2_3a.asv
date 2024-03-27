@@ -1,0 +1,57 @@
+%% Q2.3a Minimum Value of Delay
+clc
+clear
+close all
+
+% Intialisations
+N = 1000;
+deltas = [1, 2, 3, 4];
+stepSize = 0.01; 
+iterations = 100;
+M = 5; % filter order 
+a = 1;
+b = [1 0 0.5];
+x = sin(0.01*pi.*(0:N-1)); % REAL x
+
+% Plotting
+figure
+hold on
+for i = 1: length(deltas)
+    xHats = zeros(iterations,N);
+    corruptedSignals =  zeros(iterations,N);
+    MSPE = zeros(iterations,1);
+    
+    for j = 1: iterations
+        wgn = randn(1,N); % has unit variance
+        % generating the coloured noise component of s(n)
+        eta = filter(b,a,v);
+        % constructing the input signal to ALE LMS
+        s = x + eta;
+        corruptedSignals(j,:) = s;
+        [xhat,w,err] = LMS_ALE(s,stepSize,0,M,deltas(i));
+        xHats(j,:) = xhat;
+        MSPE(j) = mean((x(100:end)-xhat(100:end)').^2);
+        
+    end
+    subplot(1,4,i)
+    p1 = plot(corruptedSignals','b','LineWidth',1.5,'DisplayName','$s(n)$');
+    hold on
+    p2 = plot(xHats','r','LineWidth',1.5,'DisplayName','$\hat{x}(n)$');
+    hold on
+    p3 = plot(x,'y','LineWidth',2,'DisplayName','$x(n)$');
+    MSPE4title = mean(MSPE);
+    title(sprintf('MSPE = %0.3f, $\\Delta$ = %0.0f',MSPE4title,deltas(i)),'Interpreter','latex','fontsize',15)
+    ax = gca;
+    ax.FontSize = 15;
+    xlabel('Sample Index (n)','fontsize',15)
+    ylabel('(AU)','fontsize',15)
+    set(groot,'defaultLegendInterpreter','latex');
+    allps = [p1(1),p2(1),p3];
+    legend(allps)
+    grid on
+    grid minor
+    
+end
+
+sgtitle('Empirical Justification of Minimum Delay','fontsize',18)
+set(gcf,'color','w')
