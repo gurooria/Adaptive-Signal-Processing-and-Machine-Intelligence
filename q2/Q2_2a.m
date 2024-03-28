@@ -48,7 +48,7 @@ end
 ax = gca;
 ax.FontSize = 12;
 set(gca,'fontsize', 12);
-legend('\mu = 0.01','\mu = 0.1', 'Benveniste', 'Ang and Farhang', 'Matthews and Xie', 'fontsize', 12);
+legend('$\mu$ = 0.01','$\mu$ = 0.1', 'Benveniste', 'Ang and Farhang', 'Matthews and Xie', 'fontsize', 12);
 xlabel('Time Step', 'fontsize', 12)
 ylabel('Weight Error', 'fontsize', 12)
 title('Weight Error Curves, GASS intial \mu = 0.2')
@@ -73,7 +73,7 @@ for i = 1:5
 end
 ax = gca;
 ax.FontSize = 12;
-legend('\mu = 0.01','\mu = 0.1', 'Benveniste', 'Ang and Farhang', 'Matthews and Xie', 'fontsize', 12);
+legend('$\mu$ = 0.01','$\mu$ = 0.1', 'Benveniste', 'Ang and Farhang', 'Matthews and Xie', 'fontsize', 12);
 xlabel('Time Step', 'fontsize', 12)
 ylabel('Weight Error', 'fontsize', 12)
 title('Weight Error Curves, GASS intial \mu = 0.1')
@@ -100,7 +100,7 @@ for i = 1 : 5
 end
 ax = gca;
 ax.FontSize = 12;
-legend('\mu = 0.01','\mu = 0.1', 'Benveniste', 'Ang and Farhang', 'Matthews and Xie', 'fontsize', 12);
+legend('$\mu$ = 0.01','$\mu$ = 0.1', 'Benveniste', 'Ang and Farhang', 'Matthews and Xie', 'fontsize', 12);
 xlabel('Time Step', 'fontsize', 12)
 ylabel('Squared Weight Error (dB)', 'fontsize', 12)
 title('Squared Weight Error Curves, GASS intial \mu = 0.1')

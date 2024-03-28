@@ -32,7 +32,7 @@ end
 title("Squared Prediction Error e^{2}(n)  with 1 Realisation", 'fontsize', 12);
 xlabel("Time Step", 'fontsize', 12);
 ylabel("Squared Prediction Error (dB)", 'fontsize', 12);
-legend('\mu = 0.01','\mu = 0.05')
+legend('$\mu = 0.01$','$\mu = 0.05$')
 grid on; grid minor;
 set(gca,'fontsize', 12);
 
@@ -57,7 +57,7 @@ end
 title("Squared Prediction Error e^{2}(n)  with 100 Realisations", 'fontsize', 12);
 xlabel("Time Step", 'fontsize', 12);
 ylabel("Squared Prediction Error (dB)", 'fontsize', 12);
-legend('\mu = 0.01','\mu = 0.05')
+legend('$\mu = 0.01$','$\mu = 0.05$')
 grid on; grid minor;
 set(gcf,'color','w')
 set(gca,'fontsize', 12);

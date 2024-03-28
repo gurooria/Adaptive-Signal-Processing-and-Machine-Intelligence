@@ -39,7 +39,7 @@ for leak = 1: length(leaks)
     title("Time Evolution of a_1 over 100 Realisations, \mu = 0.01", 'fontsize', 12);
     xlabel("Time Step" , 'fontsize', 12);
     ylabel("Weight Value", 'fontsize', 12);
-    legend('\gamma = 0.1', '\gamma = 0.5', '\gamma = 0.8')
+    legend('$\gamma$ = 0.1', '$\gamma$ = 0.5', '$\gamma$ = 0.8')
     grid on; grid minor;
     set(gca,'fontsize', 12);
     
@@ -52,7 +52,7 @@ for leak = 1: length(leaks)
     title("Time Evolution of a_2 over 100 Realisations, \mu = 0.01", 'fontsize', 12);
     xlabel("Time Step", 'fontsize', 12);
     ylabel("Weight Value", 'fontsize', 12);
-    legend('\gamma = 0.1', '\gamma = 0.5', '\gamma = 0.8')
+    legend('$\gamma$ = 0.1', '$\gamma$ = 0.5', '$\gamma$ = 0.8')
     grid on; grid minor;
     set(gcf,'color','w');
     set(gca,'fontsize', 12);
@@ -78,7 +78,7 @@ for leak = 1: length(leaks)
     title("Time Evolution of a_1 over 100 Realisations, \mu = 0.05", 'fontsize', 12);
     xlabel("Time Step" , 'fontsize', 12);
     ylabel("Weight Value", 'fontsize', 12);
-    legend('\gamma = 0.1', '\gamma = 0.5', '\gamma = 0.8')
+    legend('$\gamma$ = 0.1', '$\gamma$ = 0.5', '$\gamma$ = 0.8')
     grid on; grid minor;
     set(gca,'fontsize', 12);
     
@@ -91,7 +91,7 @@ for leak = 1: length(leaks)
     title("Time Evolution of a_2 over 100 Realisations, \mu = 0.05", 'fontsize', 12);
     xlabel("Time Step", 'fontsize', 12);
     ylabel("Weight Value", 'fontsize', 12);
-    legend('\gamma = 0.1', '\gamma = 0.5', '\gamma = 0.8')
+    legend('$\gamma$ = 0.1', '$\gamma$ = 0.5', '$\gamma$ = 0.8')
     grid on; grid minor;
     set(gcf,'color','w');
     set(gca,'fontsize', 12);
