@@ -1,0 +1,47 @@
+%% Q3.3d Implementation of the DFT-CLMS algorithm - EEG signal
+clc
+clear
+close all
+
+% Intialisations
+load('EEG_Data_Assignment1.mat')
+N = 1200;
+fs = 1200;
+timeStart = 1000;
+y = POz(timeStart : timeStart+N-1);
+y = y - mean(y);
+L = 1024;
+x = (1/L)*exp(1j*2*(0:N-1)'*pi*(0:(L-1))/L).';
+stepSize = 1;
+count = 1;
+gammas = [0];
+
+figure
+hold on
+for gamma = gammas
+    coeff = complex(zeros(1, N));
+    [coeff, ~] = CLMS_dft(x, y, stepSize, gamma, L);
+    H = abs(coeff);
+    medianH = 50*median(median(H));
+    H(H > medianH) = medianH;
+
+    subplot(1,2,count)
+    surf(1:N, (0:(L-1)).*(fs/L), H, 'LineStyle','none');
+    view(2)
+    c = colorbar();
+    c.Label.FontSize = 13;
+    c.Label.String = "Power (dB)";
+    xlabel('Time Step n', 'fontsize', 12)
+    ylabel('Frequency (Hz)', 'fontsize', 12)
+    title(sprintf('\\gamma = %0.3', gamma), 'fontsize', 12)
+    ax = gca;
+    ax.FontSize = 15;
+    grid on
+    grid minor
+    ylim([0 100])
+    count = count+1;
+    hold on
+end
+
+sgtitle('EEG Time Frequency Estimation using DFT-CLMS','Interpreter','latex','fontsize',20)
+set(gcf,'color','w')

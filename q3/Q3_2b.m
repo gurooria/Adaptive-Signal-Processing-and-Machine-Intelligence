@@ -46,7 +46,7 @@ for stepSize = stepSizes
     c = colorbar();
     c.Label.FontSize = 13;
     c.Label.String = "Power (dB)";
-    title(sprintf('CLMS Time Frequency Estimation, \\mu = %0.3f', stepSize), 'fontsize', 12)
+    title(sprintf('CLMS Time-Frequency Spectrum Estimation, \\mu = %0.3f', stepSize), 'fontsize', 12)
     ax = gca;
     ax.FontSize = 12;
     grid on
