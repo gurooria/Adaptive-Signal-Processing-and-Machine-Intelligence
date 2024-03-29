@@ -6,7 +6,6 @@ close all
 % Intialisations
 load('time-series.mat')
 y = y - mean(y);
-N = length(y);
 order = 4;
 gamma = 0;
 alphaStart = 40;

@@ -5,7 +5,6 @@ close all
 
 % Intialisations
 load('time-series.mat')
-N = length(y);
 stepSize = 0.00001;
 gamma = 0;
 y = y - mean(y); % zero-mean

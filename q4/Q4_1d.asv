@@ -1,0 +1,60 @@
+%% Q4.1d Adding Bias for Non Zero-Mean Time Series
+clc
+clear
+close all
+
+% Initialisations
+load('time-series.mat')
+stepSize = 0.0000001;
+gamma = 0;
+order = 4;
+alphaStart = 40;
+alphaEnd = 100;
+alpha = 75.7;
+MSEs= [];
+predictiveGains = [];
+bias = 1;
+weights = zeros(order+bias, 1);
+
+% LMS
+[yHat, ~, error] = LMS_dp(y, stepSize, order, alpha, 0, weights, bias);
+
+% Calculate MSE & Predictive Gains
+MSE = 10*log10(10*log10(mean(abs(error).^2)));
+predictiveGains = [predictiveGains,10*log10(var(yhat)/var(error))];
+
+mseEnd = mean(error(750:1000).^2);
+mseEnd = 10*log10(mean(error(750:1000).^2));
+R_p_end = 10*log10(var(yhat(750:1000))/var(error(750:1000)));
+
+% Plotting
+figure
+plot(y,'b','LineWidth',1.5)
+hold on
+plot(yhat,'r','LineWidth',1.5)
+xlabel('Time Index (n)','fontsize',18)
+ylabel('(AU)','fontsize',18)
+title('One-Step-Ahead Prediction of AR(4) Time Series','Interpreter','latex','fontsize',18)
+legend('True Time Series','Scaled Dynamical Perceptron Estimated Time Series')
+ax = gca;
+ax.FontSize = 15; 
+grid on
+grid minor
+set(gcf,'color','w')
+
+% showing that when we approcahing the end of the signal, the prediction
+% improves
+figure
+plot(750:1000,y(750:end),'b','LineWidth',1.5)
+hold on
+plot(750:1000,yhat(750:end),'r','LineWidth',1.5)
+xlim([750,1000])
+xlabel('Time Index (n)','fontsize',18)
+ylabel('(AU)','fontsize',18)
+title('One-Step-Ahead Prediction of AR(4) Time Series','Interpreter','latex','fontsize',18)
+legend('True Time Series','Scaled Dynamical Perceptron Estimated Time Series','Location','southeast')
+ax = gca;
+ax.FontSize = 15; 
+grid on
+grid minor
+set(gcf,'color','w')
