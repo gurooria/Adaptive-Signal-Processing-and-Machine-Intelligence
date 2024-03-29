@@ -1,0 +1,57 @@
+%% Q4.1b Dynamical Perceptron and Activation Function
+clc
+close
+clear all
+
+% Initialisations
+load('time-series.mat')
+N = length(y);
+stepSize = 0.00001;
+gamma = 0;
+y = y - mean(y);
+order = 4;
+alpha = 1;
+
+%% LMS & Plotting
+[yHat, ~, error] = LMS_dp(y, stepSize, order, alpha, 0, [0;0;0;0]);
+
+figure
+plot(y, 'LineWidth', 1.2)
+hold on
+plot(yHat, 'r', 'LineWidth', 1.2)
+xlabel('Time Step n', 'fontsize', 12)
+ylabel('Magnitude', 'fontsize', 12)
+title('One-Step Ahead LMS Prediction of Time Series Data', 'fontsize', 12)
+legend('Zero-Mean Time Series','LMS Prediction (+Dynamical Perceptron)')
+ax = gca;
+ax.FontSize = 18; 
+grid on
+grid minor
+set(gcf,'color','w')
+
+% showing that when we approcahing the end of the signal, the prediction
+% improves
+figure
+plot(750:1000,y(750:end),'b','LineWidth',1.5)
+hold on
+plot(750:1000,yHat(750:end),'r','LineWidth',1.5)
+xlim([750,1000])
+xlabel('Time Index (n)','fontsize',18)
+ylabel('(AU)','fontsize',18)
+title('One-Step-Ahead Prediction of AR(4) Time Series','Interpreter','latex','fontsize',18)
+legend('True Zero-Mean Time Series','Dynamical Perceptron Estimated Time Series')
+ax = gca;
+ax.FontSize = 18; 
+grid on
+grid minor
+set(gcf,'color','w')
+
+% calculating the MSE between the true and estimated signals
+MSE = mean(error.^2);
+MSE_db = 10*log10(MSE);
+R_p = 10*log10(var(yHat)/var(error));
+
+
+MSE_end = mean(error(750:1000).^2);
+MSE_db_end = 10*log10(MSE_end);
+R_p_end = 10*log10(var(yHat(750:1000))/var(error(750:1000)));
