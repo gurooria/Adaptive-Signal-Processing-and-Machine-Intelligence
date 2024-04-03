@@ -27,12 +27,12 @@ for i = 1:100
 end
 
 % Plot the mean
-plot((lags/max(lags))*Fs, mean(real(psds)), 'color', 'b', 'LineWidth',1.2);
+plot((lags/max(lags))*Fs, mean(real(psds)), 'color', 'b', 'LineWidth', 1.2);
 xlim([0,3])
 ax = gca;
 ax.FontSize = 12;
-xlabel('Normalised Frequency (Cycles/Sample)')
-ylabel('Magnitude')
+xlabel('Frequency (Hz)', 'FontSize', 12)
+ylabel('Magnitude', 'FontSize', 12)
 set(gca,'fontsize', 12)
 title('Realisations and Mean of the Noisy Composite Sine Correlograms', 'fontsize', 12)
 grid on 
@@ -44,8 +44,8 @@ plot((lags/max(lags))*Fs, std(real(psds)),'color', 'b', 'LineWidth', 1.2);
 xlim([0,3])
 ax = gca;
 ax.FontSize = 12;
-xlabel('Normalised Frequency (Cycles/Sample)')
-ylabel('Magnitude')
+xlabel('Frequency (Hz)', 'FontSize', 12)
+ylabel('Magnitude', 'FontSize', 12)
 set(gca, 'fontsize', 12)
 title('Standard Deviation of the Noisy Composite Sine Correlograms','fontsize',12)
 grid on
@@ -58,7 +58,6 @@ set(gcf, 'color', 'w')
 hold on
 for i = 1:100
     noisySine = sine + wgn(length(sine), 1, 1)';
-
     % Compute the correlogram using the 'biased' method
     [psd, lags] = xcorr(noisySine, 'biased');
     psds(i,:) = fftshift(real(fft(ifftshift(psd))));
@@ -72,8 +71,8 @@ plot((lags/max(lags))*Fs, 10*log10(mean(real(psds))), 'color','b', 'LineWidth',1
 xlim([0,3])
 ax = gca;
 ax.FontSize = 12;
-xlabel('Normalised Frequency (Cycles/Sample)')
-ylabel('Magnitude (dB)')
+xlabel('Frequency (Hz)', 'FontSize', 12)
+ylabel('Magnitude (dB)', 'FontSize', 12)
 set(gca,'fontsize', 12)
 title('Realisations and Mean of the Noisy Composite Sine Correlograms','fontsize', 12)
 grid on 
@@ -81,12 +80,12 @@ grid minor
 
 % Plot the standard deviation
 subplot(2,2,4)
-plot((lags/max(lags))*Fs, 10*log10(std(real(psds))), 'color', 'b', 'LineWidth', 1.2);
+plot((lags/max(lags))*Fs, std(10*log10(real(psds))), 'color', 'b', 'LineWidth', 1.2);
 xlim([0,3])
 ax = gca;
 ax.FontSize = 12;
-xlabel('Normalised Frequency (Cycles/Sample)')
-ylabel('Magnitude (dB)')
+xlabel('Frequency (Hz)', 'FontSize', 12)
+ylabel('Magnitude (dB)', 'FontSize', 12)
 set(gca, 'fontsize', 12)
 title('Standard Deviation of the Noisy Composite Sine Correlograms','fontsize', 12)
 grid on

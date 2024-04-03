@@ -16,7 +16,7 @@ hold on
 % true power spectrum
 [h, ~] = freqz(1, a, length(x));
 psd = abs(h).^2;
-orders = [2, 4, 11];
+orders = [2, 4, 10];
 MSEsB = [];
 
 for i = 1: length(orders)
@@ -42,7 +42,7 @@ for i = 1: length(orders)
         case 2
             legend('True', 'AR(4)')
         case 3
-            legend('True', 'AR(11)')
+            legend('True', 'AR(10)')
     end
     grid on 
     grid minor
@@ -60,7 +60,7 @@ x = x(removed+1 : end);
 % true power spectrum
 [h, ~] = freqz(1,a,length(x));
 psd = abs(h).^2;
-orders = [2, 4, 11];
+orders = [2, 4, 10];
 MSEsC = [];
 for i = 1: length(orders)
     [aEstimate, e] = aryule(x, orders(i));
@@ -84,7 +84,7 @@ for i = 1: length(orders)
         case 2
             legend('True', 'AR(4)')
         case 3
-            legend('True', 'AR(11)')
+            legend('True', 'AR(10)')
     end
     grid on 
     grid minor

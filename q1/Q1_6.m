@@ -63,7 +63,7 @@ ax.FontSize = 12;
 xlabel('Singular Value Index', 'fontsize', 12)
 ylabel('Squared Error', 'fontsize', 12)
 title('Squared Error between X and X_{noise} vs. X and low rank approximation of X_{noise}', 'fontsize', 12)
-legend('X and $X_{noise}$','X and $X_{approx. noise}$')
+legend('X and $X_{noise}$','X and $\tilde{X}_{noise}$')
 grid on 
 grid minor
 set(gcf,'color','w')

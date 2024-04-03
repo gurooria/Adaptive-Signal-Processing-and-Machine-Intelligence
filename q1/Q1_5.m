@@ -96,7 +96,7 @@ for i = 1:3
     end
     ax = gca;
     ax.FontSize = 12;
-    xlabel('Normalised Frequency (Cycles/Sample)')
+    xlabel('Frequency (Hz)')
     ylabel('Magnitude (dB)')
     xlim([0.01 1.99])
     title(sprintf('Autoregressive PSD Estimate of RRI%d',i),'fontsize', 12)
