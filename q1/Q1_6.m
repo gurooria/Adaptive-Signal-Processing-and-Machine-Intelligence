@@ -68,6 +68,7 @@ grid on
 grid minor
 set(gcf,'color','w')
 
+
 %% 1.6c
 % training set
 bOls = inv(Xnoise' * Xnoise) * Xnoise' * Y;
