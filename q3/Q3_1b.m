@@ -64,7 +64,7 @@ grid on
 grid minor
 set(gcf,'color','w')
 %% CLMS and ACLMS
-mu = [0.1; 0.005; 0.001];
+mu = [0.1; 0.01; 0.001];
 N = length(v_high);
 filterLength = 25;
 allSpeeds = [v_low, v_med, v_high];

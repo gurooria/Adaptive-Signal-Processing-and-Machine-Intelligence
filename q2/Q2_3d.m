@@ -18,6 +18,7 @@ nfft = 5 * windowLength;
 
 %% Plot spectrogram for the original noisy signal
 figure
+subplot(1,2,1)
 spectrogram(Cz, hamming(windowLength), round(overlap * windowLength), nfft, fs, 'yaxis');
 title('Spectrogram of the Noise-Corrupted EEG Data (Cz)', 'fontsize', 12);
 xlabel('Time (minute)', 'fontsize', 12)
@@ -29,6 +30,33 @@ c.Label.FontSize = 13;
 c.Label.String = "Power (dB)";
 set(gca, 'fontSize', 12);
 set(gcf, 'color', 'w');
+
+subplot(1,2,2)
+M = 10; % optimal parameters as observed from above
+mu = 0.001;
+%Computing ANC algorithm
+[xHatANC, ~, ~] = LMS_ANC(Cz, ref, mu, 0, M);
+windowLength = 1024;
+nfft = 5 * windowLength;
+% noisy Cz
+[pNoisy, xNoisy] = pwelch(Cz, hamming(windowLength), round(overlap*windowLength), nfft, fs, 'onesided');
+pNoisy = 10*log10(pNoisy); % apply log transformation
+% denoised Cz
+[pDenoised, xDenoised] = pwelch(xHatANC, hamming(windowLength), round(overlap*windowLength), nfft, fs, 'onesided');
+pDenoised = 10*log10(pDenoised);
+
+plot(xNoisy, pNoisy, 'b', 'Linewidth', 1.2)
+hold on
+plot(xDenoised, pDenoised, 'r', 'Linewidth', 1.2)
+title('Periodogram of Noisy vs. Denoised EEG data (Cz)', 'Fontsize', 12);
+xlabel('Frequency (Hz)', 'fontsize', 12);
+xlim([0 70]);
+ylabel('Power (dB)', 'fontsize', 12);
+legend('Noisy', 'Denoised');
+set(gca, 'fontSize', 12);
+grid on
+grid minor
+
 
 %% Vary Learning Rates and Model Orders for ANC
 count = 1;

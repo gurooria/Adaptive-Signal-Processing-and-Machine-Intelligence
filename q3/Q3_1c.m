@@ -23,6 +23,7 @@ vAll(3, :) = vMagnitudes(:, 3) * cos(2*pi*(fo/fs)*n + deltas(2) + 2*pi/3);
 % clarke transform
 vProjected = clarkeMatrix * vAll; % V0 = 0, Valpha, Vbeta
 v = complex(vProjected(2, :), vProjected(3, :)); % change to complex clarke voltage using Valpha and Vbeta
+circularity = abs(mean((v).^2)/mean(abs(v).^2));
 
 % Plotting
 figure
@@ -34,7 +35,7 @@ ylim([-2 2])
 xlabel('Real', 'fontSize', 12)
 ylabel('Imaginiary', 'fontSize', 12)
 set(gca, 'Fontsize', 12)
-title('Balanced system', 'FontSize', 12)
+title(sprintf('Balanced system, ρ = 0'), 'FontSize', 12)
 grid on
 grid minor
 
@@ -45,6 +46,7 @@ deltas = zeros(2, 1); % phase distortion still normal
 
 subplot(1,3,2)
 hold on
+circularity1 = [];
 
 % Compute the voltages
 for i = 1 : size(v, 1)
@@ -56,6 +58,7 @@ for i = 1 : size(v, 1)
     vProjected = clarkeMatrix * vAll; % V0 = 0, Valpha, Vbeta
     v(i, :) = complex(vProjected(2, :), vProjected(3, :));
     scatter(real(v(i,:)), imag(v(i,:)), 12, 'filled')
+    circularity1 = [circularity1, abs(mean((v(i, :)).^2)/mean(abs(v(i, :)).^2));];
 end
 
 xlim([-2 2])
@@ -64,17 +67,18 @@ xlabel('Real', 'fontSize', 12)
 ylabel('Imaginiary', 'fontSize', 12)
 set(gca, 'Fontsize', 12)
 legend('$V_{a, b, c}$ = [0, 1, 1]','$V_{a, b, c}$ = [1, 0, 1]','$V_{a, b, c}$ = [1, 1, 0]')
-title('Unbalanced system: Voltage', 'FontSize', 12)
+title('Unbalanced system: Voltage, ρ = 0.8', 'FontSize', 12)
 grid on
 grid minor
 
 %% Unbalanced - varying phases
 vMagnitudes = ones(1, 3);
-deltas = [0,1; 0,-1; 1,0; -1,0];
+deltas = [pi/3,0; -pi/3,0; 0,pi/3; 0,-pi/3];
 v = zeros(size(deltas,1), N);
 
 subplot(1,3,3)
 hold on
+circularity2 = [];
 
 % Compute the voltages
 for i = 1 : size(v, 1)
@@ -85,6 +89,7 @@ for i = 1 : size(v, 1)
     vProjected = clarkeMatrix * vAll; % V0 = 0, Valpha, Vbeta
     v(i, :) = complex(vProjected(2, :), vProjected(3, :));
     scatter(real(v(i,:)), imag(v(i,:)), 12, 'filled')
+    circularity2 = [circularity2, abs(mean((v(i, :)).^2)/mean(abs(v(i, :)).^2));];
 end
 
 xlim([-2 2])
@@ -92,7 +97,7 @@ ylim([-2 2])
 xlabel('Real', 'fontSize', 12)
 ylabel('Imaginiary', 'fontSize', 12)
 set(gca, 'Fontsize', 12)
-legend('$\Delta_{b, c}$ = [0, 1]','$\Delta_{b, c}$ = [0, -1]', '$\Delta_{b, c}$ = [1, 0]', '$\Delta_{b, c}$ = [-1, 0]')
-title('Unbalanced system: Phase', 'FontSize', 12)
+legend('$\Delta_{b, c}$ = [$\frac{\pi}{3}$, 0]','$\Delta_{b, c}$ = [$\frac{-\pi}{3}$, 0]', '$\Delta_{b, c}$ = [0, $\frac{\pi}{3}$]', '$\Delta_{b, c}$ = [0, $\frac{-\pi}{3}$]')
+title('Unbalanced system: Phase, ρ = 0.635', 'FontSize', 12)
 grid on
 grid minor

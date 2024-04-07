@@ -6,8 +6,8 @@ close all
 % Intialisations
 N = 500;
 n = 1 : N; % time vector
-fo = 100; % system frequency
-fs = 10000; % sampling frequency
+fo = 50; % system frequency
+fs = 5000; % sampling frequency
 clarkeMatrix = sqrt(2/3) * [sqrt(2)/2 sqrt(2)/2 sqrt(2)/2; 1 -1/2 -1/2; 0 sqrt(3)/2 -sqrt(3)/2];
 stepSize = 0.02;
 
@@ -41,7 +41,7 @@ yline(fo, 'k--', 'LineWidth', 1.2)
 title("Frequency Estimation for Balanced System", 'fontsize', 12);
 xlabel("Sample Number n", 'FontSize', 12);
 ylabel('Frequency fo (Hz)', 'FontSize', 12);
-ylim([0 150])
+ylim([0 80])
 legend('CLMS','ACLMS','True Value','Interpreter','latex')
 ax = gca;
 ax.FontSize = 12;
@@ -51,7 +51,7 @@ set(gcf,'color','w')
 
 %% Unbalanced System
 vMagnitudes = [1, 1, 1]; % peak voltage magnitudes
-deltas = [0, 1]; % phase distortions
+deltas = [pi/3, 0]; % phase distortions
 
 % compute voltages
 vAll = zeros(3, N);
@@ -78,7 +78,7 @@ yline(fo, 'k--', 'LineWidth', 1.2)
 title("Frequency Estimation for Unbalanced System", 'fontsize', 12);
 xlabel("Sample Number n", 'FontSize', 12);
 ylabel('Frequency fo (Hz)', 'FontSize', 12);
-ylim([0 150])
+ylim([0 80])
 legend('CLMS','ACLMS','True Value','Interpreter','latex')
 ax = gca;
 ax.FontSize = 12;

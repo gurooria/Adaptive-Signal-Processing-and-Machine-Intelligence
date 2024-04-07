@@ -41,7 +41,7 @@ for gamma = gammas
     xlabel('Time Step n', 'fontsize', 12);
     ylabel('Frequency (Hz)', 'fontsize', 12);
     ylim([0 700])
-    title(sprintf('CLMS-DFT Time-Frequency Spectrum Estimation, \\gamma = %0.3f', gamma), 'fontsize', 12)
+    title(sprintf('DFT-CLMS Time-Frequency Spectrum Estimation, \\gamma = %0.3f', gamma), 'fontsize', 12)
     ax = gca;
     ax.FontSize = 12;
     grid on
